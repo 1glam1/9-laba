@@ -1,0 +1,70 @@
+import logging
+
+logging.basicConfig(filename='num.log', 
+                    level=logging.INFO, 
+                    format='%(asctime)s - [%(levelname)s] - %(app)s - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s')
+
+logger = logging.getLogger('logger')
+logger = logging.LoggerAdapter(logger,{'app': 'тестовое приложение'})
+num = [] 
+numdel = []
+while True:
+    logger.info('Программа запущена')
+    try:
+        N = int(input('Введите количество бочек: '))
+        logger.info(f'Пользователь ввел количество бочек: {N}')
+        for i in range(1, N+1):
+            num.append(i)
+        while True:
+            try:
+                c = int(input('Введите количество бочек, которые хотите вытянуть и убрать в сторону: '))
+                logger.info(f'Пользователь ввел количество бочек,которые надо вытянуть и убрать в сторону: {c}.')
+                if c > 0 and (N > c or N == c):
+                    while True:
+                        for i in range(c):
+                            n = int(input('Введите номер бочонка, который хотите вытянуть и убрать в сторону: '))
+                            logger.info(f'Пользователь ввел номер бочонка: {n}')
+                            if n in num:
+                                num.remove(n)
+                                numdel.append(n)
+                                logger.info(f'Пользователь вытянул и убрал бочонок {n} в {numdel}.')
+                            else:
+                                print('Этого бочонка нет в мешке!')
+                                logger.info(f'Бочонка {n} нет в мешке!')
+                        if c != len(numdel):
+                            logger.error(f'Количество бочонков, которое пользователь убрал в {numdel} не равно {c}.')
+                            num.clear()
+                            numdel.clear()
+                            for i in range(1, N+1):
+                                num.append(i)
+                            print('Были введены неверные значения!')
+                            input('\n Нажмите ENTER чтобы начать заново.')
+                            logger.error('Выбор бочонков производится заново!')
+                            continue
+                        else:
+                            break
+                else:
+                    print('Неверное значение!')
+                    logger.error('Данные введены некоректно!')
+                    continue
+                break
+            except ValueError:
+                print('Неверное значение!')
+                logger.error('Данные введены некоректно!')
+                continue  
+    except ValueError:
+        print('Неверное значение!')
+        logger.error('Данные введены некоректно!')
+        continue
+    break
+input('\nНажмите ENTER чтобы чтобы вывести номера бочонков, убранных в сторону, на экран.')
+for i in numdel:
+     print(i)  
+logger.info('Программа завершила работу.')   
+       
+
+        
+
+        
+
+
